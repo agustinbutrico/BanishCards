@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.1
+ - Fixed the preview for the mod
+
 ## 1.0.0
 
 ### Added
