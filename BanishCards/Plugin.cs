@@ -1,5 +1,4 @@
-﻿using System;
-using BepInEx;
+﻿using BepInEx;
 using BepInEx.Configuration;
 using HarmonyLib;
 using UnityEngine;
@@ -21,6 +20,10 @@ namespace BanishCards
             Log = base.Logger;
 
             Logger.LogInfo("Loading [BanishCards 1.0.0]");
+
+            // Crear e instalar los parches Harmony
+            var harmony = new Harmony("AgusBut.BanishCards");
+            harmony.PatchAll();
         }
     }
 }
