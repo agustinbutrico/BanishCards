@@ -1,7 +1,8 @@
-BanishCards Mod for Rogue Tower
-Take control of your upgrade pool.
+# BanishCards Mod for Rogue Tower
 
-BanishCards allows you to remove up to 3 unwanted upgrade cards during a Rogue Tower run, reducing RNG frustration and letting you execute clean, focused strategies for challenge runs and personal builds.
+## Take control of your upgrade pool.
+
+### BanishCards allows you to remove up to 3 unwanted upgrade cards during a Rogue Tower run, reducing RNG frustration and letting you execute clean, focused strategies for challenge runs and personal builds.
 Features
 
     Banish Upgrades:
@@ -22,9 +23,9 @@ Features
     Balanced:
     A strict 3-card banish limit per run keeps the feature strategic rather than exploitable.
 
-Why?
+## Why?
 
-Rogue Tower’s upgrades are essential for scaling difficulty, but they can lead to RNG-heavy runs when pursuing challenge achievements or specialized builds. By enabling selective removal, BanishCards adds meaningful choices without disrupting the game’s balance.
+### Rogue Tower’s upgrades are essential for scaling difficulty, but they can lead to RNG-heavy runs when pursuing challenge achievements or specialized builds. By enabling selective removal, BanishCards adds meaningful choices without disrupting the game’s balance.
 Installation
 
     Install BepInEx for Rogue Tower if you have not already.
@@ -33,7 +34,7 @@ Installation
 
     Launch the game and enjoy controlled upgrade management.
 
-Planned Features
+## Planned Features
 
     UI highlighting to indicate Banishable cards.
 
