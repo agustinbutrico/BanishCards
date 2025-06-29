@@ -1,89 +1,43 @@
 # BanishCards Mod for Rogue Tower
 
-## Take control of your upgrade pool.
+BanishCards its a mod that lets you banish unwanted upgrade cards during your Rogue Tower runs, helping you execute clean, focused strategies while reducing RNG frustration.
 
-### BanishCards allows you to remove up to 3 unwanted upgrade cards during a Rogue Tower run, reducing RNG frustration and letting you execute clean, focused strategies for challenge runs and personal builds.
-Features
+Remove cards that clutter your upgrade pool, avoid prerequisites you don't need, and keep your build aligned with your run goals.
+
+## Installation
+
+    Download the mod.
+
+    Drag and drop the .dll file into your BepInEx/plugins folder.
+
+    Run the game.
+
+## Configuration
+
+    On first launch, the mod will automatically generate a configuration file in the BepInEx/config folder.
+
+    Here, you can modify the maximum number of banishes per run (MaxBanishes) to your preferred limit.
+
+## Features
 
     Banish Upgrades:
-    Select and banish up to 3 upgrade cards per run instead of accepting them.
+    Select and banish upgrade cards during a run instead of accepting them.
 
     Strategic Pruning:
-    Banishing a card will:
+    Banishing a card:
 
-        Permanently remove it from your upgrade pool for the current run.
+        Permanently removes it from your upgrade pool for the current run.
 
-        Prevent any upgrades that require it as a prerequisite from appearing later.
+        Prevents prerequisites tied to that card from appearing.
 
-        Not provide any benefits—the card is simply removed.
-
-    Keep Your Build Clean:
-    Perfect for achievement runs like “Win One-Lane using only Ballistas,” enabling you to remove upgrades that would otherwise dilute your intended strategy.
+        Does not provide the card’s benefits; it is simply removed.
 
     Balanced:
-    A strict 3-card banish limit per run keeps the feature strategic rather than exploitable.
+    A configurable banish limit (default: 3) keeps the feature strategic and non-abusive.
 
-## Why?
+    Perfect for Challenge Runs:
+    Useful for achievements like “Win One-Lane with only Ballistas,” letting you remove cards that would dilute your strategy.
 
-### Rogue Tower’s upgrades are essential for scaling difficulty, but they can lead to RNG-heavy runs when pursuing challenge achievements or specialized builds. By enabling selective removal, BanishCards adds meaningful choices without disrupting the game’s balance.
-Installation
+## Preview
 
-    Install BepInEx for Rogue Tower if you have not already.
-
-    Download the BanishCards.dll and place it in your BepInEx/plugins folder.
-
-    Launch the game and enjoy controlled upgrade management.
-
-## Planned Features
-
-    UI highlighting to indicate Banishable cards.
-
-    Configurable banish limit via config file.
-
-    Optional toggle for enabling/disabling banish mode mid-run.
-
-## Relevant Classes You Will Work With
-
-    UpgradeCard (@02000068) – represents the upgrade cards you draw during the run.
-
-    CardManager (@0200000E) – likely manages available and drawn cards.
-
-    GameManager (@0200001B) – central game logic, often where run-level states can be stored (e.g., banishCount).
-
-    TowerUpgradeCard, DOTUpgradeCard, GoldRushCard, etc. – subclasses or variations of upgrade cards.
-
-    UpgradeButton (@02000067) – likely tied to the UI element you click to accept an upgrade.
-
-    UpgradeManager (@02000069) – may handle upgrade granting logic.
-
-## Where BanishCards mod will hook
-
-Mod’s purpose:
-
-    Allow the player to banish a card (remove it from the pool permanently during the run).
-
-### Based on reverse engineering, the cleanest insertion points are:
-
-✅ CardManager:
-
-    It holds availableCards (the pool you want to modify).
-
-    It shows cards in DrawCards.
-
-    Removes cards after activation.
-
-    Your mod would add a UI or hotkey to:
-
-        Show cards on-screen during selection.
-
-        On right-click or button press, remove the selected card permanently from availableCards.
-
-✅ UpgradeManager or UpgradeButton:
-
-    Only if you want to add a paid banish (costs XP or card count).
-
-    Otherwise, you don’t need to touch them.
-
-✅ Optional future hook:
-
-    If you want a UI showing “Banished Cards” during the run, you will need a List<UpgradeCard> to store banished cards and display them via a small overlay.
+![FavoritePriorities Mod Preview](media/Preview.gif)
