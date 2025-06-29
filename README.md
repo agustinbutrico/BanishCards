@@ -58,7 +58,7 @@ Installation
 
 ## Where BanishCards mod will hook
 
-Your mod’s purpose:
+Mod’s purpose:
 
     Allow the player to banish a card (remove it from the pool permanently during the run).
 
