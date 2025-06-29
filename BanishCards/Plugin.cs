@@ -1,7 +1,6 @@
 ﻿using BepInEx;
 using BepInEx.Configuration;
 using HarmonyLib;
-using UnityEngine;
 
 namespace BanishCards
 {
@@ -11,9 +10,10 @@ namespace BanishCards
         public static Plugin Instance { get; private set; }
         public static BepInEx.Logging.ManualLogSource Log { get; private set; }
 
-        // Máximo configurable de cartas a desaparecer
-        private ConfigEntry<KeyCode> banishCardsMax;
-        public ConfigEntry<KeyCode> BanishCardsMax => banishCardsMax;
+        public ConfigEntry<int> MaxBanishesConfig { get; private set; }
+
+        internal int BanishesThisRun = 0;
+
         private void Awake()
         {
             Instance = this;
@@ -21,7 +21,14 @@ namespace BanishCards
 
             Logger.LogInfo("Loading [BanishCards 1.0.0]");
 
-            // Crear e instalar los parches Harmony
+            // Create config on first run
+            MaxBanishesConfig = Config.Bind(
+                "General",
+                "MaxBanishes",
+                3,
+                "Maximum number of cards you can banish per run."
+            );
+
             var harmony = new Harmony("AgusBut.BanishCards");
             harmony.PatchAll();
         }

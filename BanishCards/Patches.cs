@@ -86,9 +86,28 @@ namespace BanishCards
 
         static void BanishCard(CardManager cardManager, int index)
         {
+            // Access cards array
             var cardsField = AccessTools.Field(typeof(CardManager), "cards");
             UpgradeCard[] cards = (UpgradeCard[])cardsField.GetValue(cardManager);
 
+            // Count cards shown
+            int cardsShown = 0;
+            for (int i = 0; i < cards.Length; i++)
+                if (cards[i] != null)
+                    cardsShown++;
+
+            // Compute maximum allowed banishes now (to leave 1 card for selection)
+            int maxBanishes = Plugin.Instance.MaxBanishesConfig.Value;
+            int maxAllowedBanishesNow = Mathf.Min(maxBanishes, cardsShown - 1);
+
+            // ENFORCE banish limit BEFORE proceeding
+            if (Plugin.Instance.BanishesThisRun >= maxAllowedBanishesNow)
+            {
+                // Optionally add a visual or sound feedback here to indicate limit reached
+                return;
+            }
+
+            // Proceed with banish
             var availableCardsField = AccessTools.Field(typeof(CardManager), "availableCards");
             var availableCards = (List<UpgradeCard>)availableCardsField.GetValue(cardManager);
 
@@ -98,6 +117,9 @@ namespace BanishCards
             if (cards == null || index >= cards.Length) return;
             var card = cards[index];
             if (card == null) return;
+
+            // Increment banish counter AFTER passing the check
+            Plugin.Instance.BanishesThisRun++;
 
             if (availableCards.Contains(card))
                 availableCards.Remove(card);
@@ -111,7 +133,6 @@ namespace BanishCards
                 cards[i] = cards[i + 1];
 
             cards[currentCount - 1] = null;
-
             cardHolders[currentCount - 1].SetActive(false);
 
             var titlesField = AccessTools.Field(typeof(CardManager), "titles");
@@ -124,7 +145,7 @@ namespace BanishCards
 
             for (int i = index; i < currentCount - 1; i++)
             {
-                if (cards[i] != null)   
+                if (cards[i] != null)
                 {
                     titles[i].text = cards[i].title;
                     images[i].sprite = cards[i].image;
