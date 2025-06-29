@@ -29,37 +29,51 @@ namespace BanishCards
                     var selectButton = selectButtonTransform.GetComponent<Button>();
                     if (selectButton == null) continue;
 
-                    // Clone button object
+                    // === CLONE SelectButton for BanishButton ===
                     var banishButtonObj = GameObject.Instantiate(selectButton.gameObject, highlight);
                     banishButtonObj.name = "BanishButton";
                     banishButtonObj.transform.localScale = Vector3.one;
                     banishButtonObj.transform.localPosition = new Vector3(0f, 135f, 0f);
+                    banishButtonObj.transform.SetAsLastSibling();
 
-                    // Set button text
-                    var text = banishButtonObj.GetComponentInChildren<Text>();
-                    if (text != null) text.text = "Banish";
+                    // Replace Button cleanly while preserving visuals
+                    var oldBtn = banishButtonObj.GetComponent<Button>();
+                    if (oldBtn != null) UnityEngine.Object.DestroyImmediate(oldBtn);
+                    var newBtn = banishButtonObj.AddComponent<Button>();
+                    newBtn.transition = selectButton.transition;
+                    newBtn.colors = selectButton.colors;
+                    newBtn.navigation = new Navigation { mode = Navigation.Mode.None };
 
-                    // Remove old Button component
-                    var oldButton = banishButtonObj.GetComponent<Button>();
-                    if (oldButton != null)
-                        UnityEngine.Object.Destroy(oldButton);
+                    // Copy Image styling
+                    var img = banishButtonObj.GetComponent<Image>();
+                    var sampleImg = selectButton.GetComponent<Image>();
+                    img.sprite = sampleImg.sprite;
+                    img.type = sampleImg.type;
+                    img.color = sampleImg.color;
+                    img.raycastTarget = true;
+                    newBtn.targetGraphic = img;
 
-                    // Add fresh Button component
-                    var banishButton = banishButtonObj.AddComponent<Button>();
+                    // Configure Text styling
+                    var txt = banishButtonObj.GetComponentInChildren<Text>();
+                    var sampleTxt = selectButton.GetComponentInChildren<Text>();
+                    if (txt != null && sampleTxt != null)
+                    {
+                        txt.text = "Banish";
+                        txt.font = sampleTxt.font;
+                        txt.fontSize = sampleTxt.fontSize;
+                        txt.color = sampleTxt.color;
+                        txt.alignment = sampleTxt.alignment;
+                        txt.resizeTextForBestFit = sampleTxt.resizeTextForBestFit;
+                        txt.resizeTextMinSize = sampleTxt.resizeTextMinSize;
+                        txt.resizeTextMaxSize = sampleTxt.resizeTextMaxSize;
+                    }
 
-                    // Transfer visual styling
-                    var image = banishButtonObj.GetComponent<Image>();
-                    banishButton.targetGraphic = image;
-
-                    // Assign BanishCard action
+                    // Hook up banish logic
                     int capturedIndex = i;
-                    banishButton.onClick.AddListener(() =>
+                    newBtn.onClick.AddListener(() =>
                     {
                         BanishCard(__instance, capturedIndex);
                     });
-
-                    // Disable navigation conflicts
-                    banishButton.navigation = new Navigation { mode = Navigation.Mode.None };
 
                     banishButtonObj.SetActive(true);
                 }
@@ -72,29 +86,57 @@ namespace BanishCards
 
         static void BanishCard(CardManager cardManager, int index)
         {
-            // Reflection: Access necessary private fields
             var cardsField = AccessTools.Field(typeof(CardManager), "cards");
             UpgradeCard[] cards = (UpgradeCard[])cardsField.GetValue(cardManager);
 
             var availableCardsField = AccessTools.Field(typeof(CardManager), "availableCards");
             var availableCards = (List<UpgradeCard>)availableCardsField.GetValue(cardManager);
 
-            var uiField = AccessTools.Field(typeof(CardManager), "ui");
-            GameObject ui = (GameObject)uiField.GetValue(cardManager);
-
-            var drawingCardsField = AccessTools.Field(typeof(CardManager), "<drawingCards>k__BackingField");
+            var cardHoldersField = AccessTools.Field(typeof(CardManager), "cardHolders");
+            GameObject[] cardHolders = (GameObject[])cardHoldersField.GetValue(cardManager);
 
             if (cards == null || index >= cards.Length) return;
-
             var card = cards[index];
             if (card == null) return;
 
             if (availableCards.Contains(card))
                 availableCards.Remove(card);
 
-            drawingCardsField.SetValue(cardManager, false);
-            ui.SetActive(false);
-            SpawnManager.instance.ShowSpawnUIs(true);
+            int currentCount = 0;
+            for (int i = 0; i < cards.Length; i++)
+                if (cards[i] != null)
+                    currentCount++;
+
+            for (int i = index; i < currentCount - 1; i++)
+                cards[i] = cards[i + 1];
+
+            cards[currentCount - 1] = null;
+
+            cardHolders[currentCount - 1].SetActive(false);
+
+            var titlesField = AccessTools.Field(typeof(CardManager), "titles");
+            var imagesField = AccessTools.Field(typeof(CardManager), "images");
+            var descriptionsField = AccessTools.Field(typeof(CardManager), "descriptions");
+
+            Text[] titles = (Text[])titlesField.GetValue(cardManager);
+            Image[] images = (Image[])imagesField.GetValue(cardManager);
+            Text[] descriptions = (Text[])descriptionsField.GetValue(cardManager);
+
+            for (int i = index; i < currentCount - 1; i++)
+            {
+                if (cards[i] != null)   
+                {
+                    titles[i].text = cards[i].title;
+                    images[i].sprite = cards[i].image;
+                    descriptions[i].text = cards[i].description;
+                }
+            }
+
+            titles[currentCount - 1].text = "";
+            images[currentCount - 1].sprite = null;
+            descriptions[currentCount - 1].text = "";
+
+            // UI remains open for player to select remaining cards
         }
     }
 }
