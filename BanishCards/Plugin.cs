@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 namespace BanishCards
 {
-    [BepInPlugin("AgusBut.BanishCards", "BanishCards", "1.0.0")]
+    [BepInPlugin("AgusBut.BanishCards", "BanishCards", "1.0.1")]
     public class Plugin : BaseUnityPlugin
     {
         public static Plugin Instance { get; private set; }
@@ -20,7 +20,7 @@ namespace BanishCards
             Instance = this;
             Log = base.Logger;
 
-            Logger.LogInfo("Loading [BanishCards 1.0.0]");
+            Logger.LogInfo("Loading [BanishCards 1.0.1]");
 
             // Create config on first run
             MaxBanishesConfig = Config.Bind(
