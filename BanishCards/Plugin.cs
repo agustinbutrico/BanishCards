@@ -1,6 +1,7 @@
 ﻿using BepInEx;
 using BepInEx.Configuration;
 using HarmonyLib;
+using UnityEngine.SceneManagement;
 
 namespace BanishCards
 {
@@ -29,8 +30,20 @@ namespace BanishCards
                 "Maximum number of cards you can banish per run."
             );
 
+            SceneManager.sceneLoaded += OnSceneLoaded;
+
             var harmony = new Harmony("AgusBut.BanishCards");
             harmony.PatchAll();
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            if (scene.name == "GameScene")
+            {
+                Logger.LogDebug("New run detected. Resetting banish counter.");
+                Logger.LogDebug($"[BanishCards] Loaded MaxBanishes from config: {MaxBanishesConfig.Value}");
+                BanishesThisRun = 0;
+            }
         }
     }
 }

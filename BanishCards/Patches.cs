@@ -75,6 +75,8 @@ namespace BanishCards
                         BanishCard(__instance, capturedIndex);
                     });
 
+                    // Control if the banish button should be active
+                    banishButtonObj.AddComponent<BanishButtonControl>();
                     banishButtonObj.SetActive(true);
                 }
                 catch (Exception ex)
@@ -90,20 +92,25 @@ namespace BanishCards
             var cardsField = AccessTools.Field(typeof(CardManager), "cards");
             UpgradeCard[] cards = (UpgradeCard[])cardsField.GetValue(cardManager);
 
-            // Count cards shown
+            // Dynamically count cards currently displayed
             int cardsShown = 0;
             for (int i = 0; i < cards.Length; i++)
                 if (cards[i] != null)
                     cardsShown++;
 
-            // Compute maximum allowed banishes now (to leave 1 card for selection)
+            // Determine remaining banishes for this run
             int maxBanishes = Plugin.Instance.MaxBanishesConfig.Value;
-            int maxAllowedBanishesNow = Mathf.Min(maxBanishes, cardsShown - 1);
+            int remainingBanishesThisRun = maxBanishes - Plugin.Instance.BanishesThisRun;
 
-            // ENFORCE banish limit BEFORE proceeding
-            if (Plugin.Instance.BanishesThisRun >= maxAllowedBanishesNow)
+            // Determine max allowed for this draw (to leave 1 card)
+            int perDrawLimit = cardsShown - 1;
+
+            // Final limit: min of remaining banishes and per-draw limit
+            int maxAllowedBanishesNow = Mathf.Min(remainingBanishesThisRun, perDrawLimit);
+
+            if (maxAllowedBanishesNow <= 0)
             {
-                // Optionally add a visual or sound feedback here to indicate limit reached
+                // Cannot banish anymore this draw or run
                 return;
             }
 
@@ -124,6 +131,7 @@ namespace BanishCards
             if (availableCards.Contains(card))
                 availableCards.Remove(card);
 
+            // Adjust cards array to shift down
             int currentCount = 0;
             for (int i = 0; i < cards.Length; i++)
                 if (cards[i] != null)
@@ -135,6 +143,7 @@ namespace BanishCards
             cards[currentCount - 1] = null;
             cardHolders[currentCount - 1].SetActive(false);
 
+            // Update UI text/images
             var titlesField = AccessTools.Field(typeof(CardManager), "titles");
             var imagesField = AccessTools.Field(typeof(CardManager), "images");
             var descriptionsField = AccessTools.Field(typeof(CardManager), "descriptions");
@@ -158,6 +167,21 @@ namespace BanishCards
             descriptions[currentCount - 1].text = "";
 
             // UI remains open for player to select remaining cards
+
+            // Refresh canvas so buttons state reflects inmediately
+            UIRefreshHelper.ForceRefreshCanvas();
+        }
+        public static class UIRefreshHelper
+        {
+            public static void ForceRefreshCanvas()
+            {
+                var canvasGo = GameObject.Find("CardUI/Canvas");
+                if (canvasGo != null)
+                {
+                    canvasGo.SetActive(false);
+                    canvasGo.SetActive(true);
+                }
+            }
         }
     }
 }
