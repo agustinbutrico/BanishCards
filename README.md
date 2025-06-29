@@ -42,3 +42,17 @@ Installation
 
     Optional toggle for enabling/disabling banish mode mid-run.
 
+## Relevant Classes You Will Work With
+
+    UpgradeCard (@02000068) – represents the upgrade cards you draw during the run.
+
+    CardManager (@0200000E) – likely manages available and drawn cards.
+
+    GameManager (@0200001B) – central game logic, often where run-level states can be stored (e.g., banishCount).
+
+    TowerUpgradeCard, DOTUpgradeCard, GoldRushCard, etc. – subclasses or variations of upgrade cards.
+
+    UpgradeButton (@02000067) – likely tied to the UI element you click to accept an upgrade.
+
+    UpgradeManager (@02000069) – may handle upgrade granting logic.
+
