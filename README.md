@@ -56,3 +56,34 @@ Installation
 
     UpgradeManager (@02000069) – may handle upgrade granting logic.
 
+## Where BanishCards mod will hook
+
+Your mod’s purpose:
+
+    Allow the player to banish a card (remove it from the pool permanently during the run).
+
+### Based on reverse engineering, the cleanest insertion points are:
+
+✅ CardManager:
+
+    It holds availableCards (the pool you want to modify).
+
+    It shows cards in DrawCards.
+
+    Removes cards after activation.
+
+    Your mod would add a UI or hotkey to:
+
+        Show cards on-screen during selection.
+
+        On right-click or button press, remove the selected card permanently from availableCards.
+
+✅ UpgradeManager or UpgradeButton:
+
+    Only if you want to add a paid banish (costs XP or card count).
+
+    Otherwise, you don’t need to touch them.
+
+✅ Optional future hook:
+
+    If you want a UI showing “Banished Cards” during the run, you will need a List<UpgradeCard> to store banished cards and display them via a small overlay.
