@@ -1,0 +1,9 @@
+{
+    "name": "BanishCards",
+    "version_number": "1.0.0",
+    "website_url": "https://github.com/agustinbutrico/BanishCards",
+    "description": "Banish unwanted upgrade cards during your Rogue Tower runs to reduce RNG frustration and execute clean, focused strategies. Configurable banish limits with seamless UI integration.",
+    "dependencies": [
+        "bbepis-BepInEx_Rogue_Tower-5.4.1900"
+    ]
+}
