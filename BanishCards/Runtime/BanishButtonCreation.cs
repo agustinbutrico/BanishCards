@@ -73,7 +73,8 @@ namespace BanishCards.Runtime
 
             if (buttonText != null)
             {
-                Color c = ColorsHelper.Black;
+                var buttonStyle = GetPanelStyle(StyleType.Button);
+                Color c = buttonStyle.TextColor;
                 c.a = shouldBeInvisible ? 0f : shouldBeTranslucent ? 0.3f : 1f;
                 buttonText.color = c;
             }
