@@ -1,10 +1,13 @@
-﻿using HarmonyLib;
+﻿using BanishCards.Utility;
+using HarmonyLib;
+using TexturesLib.Shared;
 using UnityEngine;
 using UnityEngine.UI;
+using static BanishCards.Style.StyleManager;
 
-namespace BanishCards
+namespace BanishCards.Runtime
 {
-    public class BanishButtonControl : MonoBehaviour
+    public class BanishButtonCreation : MonoBehaviour
     {
         private Button button;
         private Image buttonImage;
@@ -15,6 +18,21 @@ namespace BanishCards
             button = GetComponent<Button>();
             buttonImage = GetComponent<Image>();
             buttonText = GetComponentInChildren<Text>();
+
+            var buttonStyle = GetPanelStyle(StyleType.Button);
+
+            // Assign base and hover sprites
+            if (buttonImage != null)
+            {
+                buttonImage.sprite = SpriteHelper.FindSpriteByName($"{buttonStyle.Slice}Filled");
+            }
+
+            if (button != null)
+            {
+                SpriteState spriteState = button.spriteState;
+                spriteState.highlightedSprite = SpriteHelper.FindSpriteByName(buttonStyle.Slice);
+                button.spriteState = spriteState;
+            }
         }
 
         void OnEnable()
@@ -24,7 +42,8 @@ namespace BanishCards
 
         public void UpdateState()
         {
-            int maxBanishes = Plugin.Instance.MaxBanishesConfig.Value;
+            
+            int maxBanishes = ConfigManager.MaxBanishesConfig.Value;
             int banishesDone = Plugin.Instance.BanishesThisRun;
 
             var cardsField = AccessTools.Field(typeof(CardManager), "cards");
@@ -36,10 +55,10 @@ namespace BanishCards
 
             int perDrawLimit = cardsShown - 1;
             int remainingBanishes = maxBanishes - banishesDone;
-            int maxAllowedBanishesNow = Mathf.Min(remainingBanishes, perDrawLimit);
+            Mathf.Min(remainingBanishes, perDrawLimit);
 
-            bool shouldBeInvisible = (banishesDone >= maxBanishes);
-            bool shouldBeTranslucent = (cardsShown <= 1) && !shouldBeInvisible;
+            bool shouldBeInvisible = banishesDone >= maxBanishes;
+            bool shouldBeTranslucent = cardsShown <= 1 && !shouldBeInvisible;
 
             // Set interactable
             button.interactable = !(shouldBeInvisible || shouldBeTranslucent);
@@ -54,7 +73,7 @@ namespace BanishCards
 
             if (buttonText != null)
             {
-                Color c = buttonText.color;
+                Color c = ColorsHelper.Black;
                 c.a = shouldBeInvisible ? 0f : shouldBeTranslucent ? 0.3f : 1f;
                 buttonText.color = c;
             }

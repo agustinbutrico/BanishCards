@@ -1,17 +1,18 @@
-﻿using BepInEx;
-using BepInEx.Configuration;
+﻿using BanishCards.Runtime;
+using BanishCards.Utility;
+using BepInEx;
 using HarmonyLib;
 using UnityEngine.SceneManagement;
 
 namespace BanishCards
 {
-    [BepInPlugin("AgusBut.BanishCards", "BanishCards", "1.0.1")]
+    [BepInPlugin("AgusBut.BanishCards", "BanishCards", "1.1.0")]
+    [BepInDependency("AgusBut.TexturesLib.Shared")]
+    [BepInDependency("AgusBut.TexturesLib.UI")]
     public class Plugin : BaseUnityPlugin
     {
         public static Plugin Instance { get; private set; }
         public static BepInEx.Logging.ManualLogSource Log { get; private set; }
-
-        public ConfigEntry<int> MaxBanishesConfig { get; private set; }
 
         internal int BanishesThisRun = 0;
 
@@ -20,29 +21,22 @@ namespace BanishCards
             Instance = this;
             Log = base.Logger;
 
-            Logger.LogInfo("Loading [BanishCards 1.0.1]");
+            ConfigManager.Initialize(this);
 
-            // Create config on first run
-            MaxBanishesConfig = Config.Bind(
-                "General",
-                "MaxBanishes",
-                3,
-                "Maximum number of cards you can banish per run."
-            );
-
-            SceneManager.sceneLoaded += OnSceneLoaded;
+            SceneManager.activeSceneChanged += OnActiveSceneChanged;
 
             var harmony = new Harmony("AgusBut.BanishCards");
             harmony.PatchAll();
+
+            Logger.LogInfo("BanishCards loaded successfully.");
         }
 
-        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        private void OnActiveSceneChanged(Scene oldScene, Scene newScene)
         {
-            if (scene.name == "GameScene")
+            if (newScene.name == "GameScene")
             {
-                Logger.LogDebug("New run detected. Resetting banish counter.");
-                Logger.LogDebug($"[BanishCards] Loaded MaxBanishes from config: {MaxBanishesConfig.Value}");
                 BanishesThisRun = 0;
+                BanishedCards.BanishedUnlockNames.Clear();
             }
         }
     }
