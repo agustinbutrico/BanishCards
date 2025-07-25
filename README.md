@@ -42,9 +42,9 @@ Remove cards that clutter your upgrade pool, avoid prerequisites you don't need,
 
 ## Preview
 
-![BanishCards Mod Preview](https://raw.githubusercontent.com/agustinbutrico/BanishCards/main/media/Preview.gif)
+![BanishCards Mod Preview](https://raw.githubusercontent.com/agustinbutrico/BanishCards/main/Media/Preview.gif)
 
 ## Color customization
 
-![BanishCards Mod Preview](https://raw.githubusercontent.com/agustinbutrico/BanishCards/main/media/ColorPreview.gif)
+![BanishCards Mod Preview](https://raw.githubusercontent.com/agustinbutrico/BanishCards/main/Media/ColorPreview.gif)
 
