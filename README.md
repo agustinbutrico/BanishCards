@@ -44,5 +44,7 @@ Remove cards that clutter your upgrade pool, avoid prerequisites you don't need,
 
 ![BanishCards Mod Preview](https://raw.githubusercontent.com/agustinbutrico/BanishCards/main/media/Preview.gif)
 
+## Color customization
+
 ![BanishCards Mod Preview](https://raw.githubusercontent.com/agustinbutrico/BanishCards/main/media/ColorPreview.gif)
 
