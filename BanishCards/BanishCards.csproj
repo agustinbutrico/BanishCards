@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net472</TargetFramework>
@@ -8,39 +8,47 @@
 
     <ItemGroup>
         <Reference Include="0Harmony">
-            <HintPath>libs\0Harmony.dll</HintPath>
+            <HintPath>Libs\0Harmony.dll</HintPath>
             <Private>false</Private>
         </Reference>
         <Reference Include="Assembly-CSharp">
-            <HintPath>libs\Assembly-CSharp.dll</HintPath>
+            <HintPath>Libs\Assembly-CSharp.dll</HintPath>
             <Private>false</Private>
         </Reference>
         <Reference Include="Assembly-CSharp-firstpass">
-            <HintPath>libs\Assembly-CSharp-firstpass.dll</HintPath>
+            <HintPath>Libs\Assembly-CSharp-firstpass.dll</HintPath>
             <Private>false</Private>
         </Reference>
         <Reference Include="BepInEx">
-            <HintPath>libs\BepInEx.dll</HintPath>
+            <HintPath>Libs\BepInEx.dll</HintPath>
             <Private>false</Private>
         </Reference>
+        <Reference Include="TexturesLib.Shared">
+            <HintPath>Libs\TexturesLib.Shared.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+        <Reference Include="TexturesLib.UI">
+            <HintPath>Libs\TexturesLib.UI.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
         <Reference Include="UnityEngine">
-            <HintPath>libs\UnityEngine.dll</HintPath>
+            <HintPath>Libs\UnityEngine.dll</HintPath>
             <Private>false</Private>
         </Reference>
         <Reference Include="UnityEngine.CoreModule">
-            <HintPath>libs\UnityEngine.CoreModule.dll</HintPath>
+            <HintPath>Libs\UnityEngine.CoreModule.dll</HintPath>
             <Private>false</Private>
         </Reference>
         <Reference Include="UnityEngine.TextRenderingModule">
-            <HintPath>libs\UnityEngine.TextRenderingModule.dll</HintPath>
+            <HintPath>Libs\UnityEngine.TextRenderingModule.dll</HintPath>
 	        <Private>false</Private>
         </Reference>
         <Reference Include="UnityEngine.UI">
-            <HintPath>libs\UnityEngine.UI.dll</HintPath>
+            <HintPath>Libs\UnityEngine.UI.dll</HintPath>
             <Private>false</Private>
         </Reference>
         <Reference Include="UnityEngine.UIModule">
-            <HintPath>libs\UnityEngine.UIModule.dll</HintPath>
+            <HintPath>Libs\UnityEngine.UIModule.dll</HintPath>
             <Private>false</Private>
         </Reference>
     </ItemGroup>
