@@ -1,7 +1,10 @@
 # Changelog
 
+## 1.0.2
+ - Fixed an error that was preventing the mod from reseting after starting a new game.
+
 ## 1.0.1
- - Fixed the preview for the mod
+ - Fixed the preview for the mod.
 
 ## 1.0.0
 
