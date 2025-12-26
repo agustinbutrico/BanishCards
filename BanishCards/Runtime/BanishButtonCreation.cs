@@ -1,6 +1,5 @@
 ﻿using BanishCards.Utility;
 using HarmonyLib;
-using TexturesLib.Shared;
 using UnityEngine;
 using UnityEngine.UI;
 using static BanishCards.Style.StyleManager;

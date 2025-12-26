@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 
 namespace BanishCards
 {
-    [BepInPlugin("AgusBut.BanishCards", "BanishCards", "1.0.2")]
+    [BepInPlugin("AgusBut.BanishCards", "BanishCards", "1.0.3")]
+    [BepInDependency("AgusBut.CardRenderer")]
     public class Plugin : BaseUnityPlugin
     {
         public static Plugin Instance { get; private set; }
@@ -19,14 +20,7 @@ namespace BanishCards
             Instance = this;
             Log = base.Logger;
 
-            // Create config on first run
-            MaxBanishesConfig = Config.Bind(
-                "General",
-                "MaxBanishes",
-                3,
-                "Maximum number of cards you can banish per run."
-            );
-
+            ConfigManager.Initialize(this);
             SceneManager.activeSceneChanged += OnActiveSceneChanged;
 
             var harmony = new Harmony("AgusBut.BanishCards");
